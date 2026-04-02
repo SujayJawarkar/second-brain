@@ -11,12 +11,31 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
   return isAuth ? <>{children}</> : <Navigate to="/login" replace />;
 }
 
+function PublicRoute({ children }: { children: React.ReactNode }) {
+  const isAuth = useAuthStore((s) => s.isAuth);
+  return !isAuth ? <>{children}</> : <Navigate to="/" replace />;
+}
+
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <LoginPage />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <RegisterPage />
+            </PublicRoute>
+          }
+        />
         <Route
           path="/"
           element={
