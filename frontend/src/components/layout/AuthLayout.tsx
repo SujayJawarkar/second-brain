@@ -1,5 +1,6 @@
-import { Brain } from "lucide-react";
+import { Brain, Sun, Moon } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTheme } from "../../lib/theme";
 
 interface Props {
   children: React.ReactNode;
@@ -18,10 +19,24 @@ export default function AuthLayout({
   footerLink,
   footerHref,
 }: Props) {
+  const { isDark, toggle } = useTheme();
+
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-background flex relative">
+      {/* Theme Toggle Button */}
+      <button
+        onClick={toggle}
+        className="absolute top-6 right-6 p-2.5 rounded-full bg-card border border-border shadow-sm text-muted-foreground hover:text-foreground transition-colors z-10"
+      >
+        {isDark ? (
+          <Sun className="w-5 h-5 text-amber-500" />
+        ) : (
+          <Moon className="w-5 h-5 text-indigo-500" />
+        )}
+      </button>
+
       {/* Left panel — branding */}
-      <div className="hidden lg:flex lg:w-1/2 bg-brand-600 dark:bg-brand-800 flex-col justify-between p-12">
+      <div className="hidden lg:flex lg:w-1/2 bg-brand flex-col justify-between p-12">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
             <Brain className="w-5 h-5 text-white" />
@@ -55,7 +70,7 @@ export default function AuthLayout({
         <div className="w-full max-w-md">
           {/* Mobile logo */}
           <div className="flex items-center gap-2 mb-8 lg:hidden">
-            <div className="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-brand flex items-center justify-center">
               <Brain className="w-4 h-4 text-white" />
             </div>
             <span className="font-semibold text-foreground">Second Brain</span>
@@ -74,7 +89,7 @@ export default function AuthLayout({
             {footerText}{" "}
             <Link
               to={footerHref}
-              className="text-brand-600 dark:text-brand-400 font-medium hover:underline"
+              className="text-brand font-medium hover:underline"
             >
               {footerLink}
             </Link>

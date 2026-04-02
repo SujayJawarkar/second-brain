@@ -96,7 +96,7 @@ export default function RegisterPage() {
 
         <Button
           type="submit"
-          className="w-full h-11 bg-brand-600 hover:bg-brand-700 text-white font-medium"
+          className="w-full h-11 bg-brand hover:opacity-90 transition-opacity text-white font-medium"
           disabled={register.isPending || !email || !allRulesMet}
         >
           {register.isPending ? (
