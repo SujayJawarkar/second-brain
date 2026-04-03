@@ -40,7 +40,7 @@ async function processMessage(data: Record<string, string>) {
   }
 }
 
-async function run() {
+export async function startWorker() {
   await setupGroup();
   console.log(`🚀 Tag worker started (PID ${process.pid})`);
 
@@ -78,4 +78,3 @@ async function run() {
   }
 }
 
-run();

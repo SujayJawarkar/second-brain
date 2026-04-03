@@ -8,4 +8,5 @@ export const env = {
   databaseUrl: process.env.DATABASE_URL!,
   redisUrl: process.env.REDIS_URL!,
   aiMode: (process.env.AI_MODE as "free" | "pro") || "free",
+  frontendUrl: process.env.FRONTEND_URL || "http://localhost:5173",
 };

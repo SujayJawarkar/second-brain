@@ -75,7 +75,7 @@ async function processMessage(id: string, data: Record<string, string>) {
   }
 }
 
-async function run() {
+export async function startWorker() {
   await setupGroup();
   console.log(`🚀 Ingest worker started (PID ${process.pid})`);
 
@@ -117,4 +117,3 @@ async function run() {
   }
 }
 
-run();
