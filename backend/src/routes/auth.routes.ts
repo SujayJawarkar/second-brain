@@ -44,6 +44,17 @@ router.post("/login", async (req: Request, res: Response) => {
   }
 });
 
+// POST /api/v1/auth/upgrade — simulate payment & flip plan to pro
+router.post("/upgrade", authenticate, async (req: AuthRequest, res: Response) => {
+  const { userId } = req.user!;
+  try {
+    const result = await authService.upgradeToPro(userId);
+    res.json(result);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 // PUT /api/v1/auth/password — change password (authenticated)
 router.put("/password", authenticate, async (req: AuthRequest, res: Response) => {
   const { currentPassword, newPassword } = req.body;

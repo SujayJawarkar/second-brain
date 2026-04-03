@@ -11,4 +11,6 @@ export const authApi = {
     api.put("/auth/password", { currentPassword, newPassword }),
 
   deleteAccount: () => api.delete("/auth/account"),
+
+  upgradeToPro: () => api.post("/auth/upgrade"),
 };

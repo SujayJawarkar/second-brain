@@ -29,4 +29,8 @@ export const itemsApi = {
 
   removeTag: (id: string, tag: string) =>
     api.delete(`/items/${id}/tags/${tag}`),
+
+  getResurface: () => api.get("/resurface"),
+
+  markResurfaceViewed: (id: string) => api.post(`/resurface/${id}/viewed`),
 };

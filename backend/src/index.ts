@@ -10,6 +10,7 @@ import itemRoutes from "./routes/item.routes";
 import searchRoutes from "./routes/search.routes";
 import graphRoutes from "./routes/graph.routes";
 import streamRoutes from "./routes/stream.routes";
+import resurfaceRoutes from "./routes/resurface.routes";
 // Workers
 import { startWorker as startIngestWorker } from "./workers/ingest.worker";
 import { startWorker as startEmbedWorker } from "./workers/embed.worker";
@@ -42,6 +43,7 @@ app.use("/api/v1/items", itemRoutes);
 app.use("/api/v1/search", searchRoutes);
 app.use("/api/v1/graph", graphRoutes);
 app.use("/api/v1/stream", streamRoutes);
+app.use("/api/v1/resurface", resurfaceRoutes);
 
 // Start SSE Redis subscriber
 sse.startSubscriber();

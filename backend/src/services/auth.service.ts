@@ -75,6 +75,20 @@ export class AuthService {
     };
     return jwt.sign(payload, env.jwtSecret, { expiresIn: "7d" });
   }
+  async upgradeToPro(userId: string) {
+    const [updated] = await db
+      .update(users)
+      .set({ plan: "pro" })
+      .where(eq(users.id, userId))
+      .returning({ id: users.id, email: users.email, plan: users.plan });
+
+    if (!updated) throw new Error("User not found");
+
+    // Issue a fresh token with the pro plan claim
+    const token = this.signToken(updated);
+    return { user: updated, token };
+  }
+
   async changePassword(userId: string, currentPassword: string, newPassword: string) {
     const [user] = await db.select().from(users).where(eq(users.id, userId)).limit(1);
     if (!user) throw new Error("User not found");

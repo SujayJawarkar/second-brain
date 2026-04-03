@@ -5,6 +5,7 @@ import AppLayout from "../components/layout/AppLayout";
 import SaveBar from "../components/items/SaveBar";
 import ItemCard from "../components/items/ItemCard";
 import ItemDetailDrawer from "../components/items/ItemDetailDrawer";
+import TodaysPicks from "../components/items/TodaysPicks";
 import { useItems } from "../hooks/useItems";
 import { useSSE } from "../hooks/useSSE";
 import type { Item } from "../types";
@@ -89,6 +90,9 @@ export default function DashboardPage() {
               </p>
             </div>
           </div>
+
+          {/* Today's Picks — resurfacing panel */}
+          <TodaysPicks onOpenDrawer={(id) => setSelectedId(id)} />
 
           {/* Loading state */}
           {isLoading && (

@@ -22,6 +22,7 @@ import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import { useAuthStore } from "../store/auth.store";
 import { useItems } from "../hooks/useItems";
+import PaymentModal from "../components/billing/PaymentModal";
 
 const FREE_LIMIT = 100;
 
@@ -108,6 +109,7 @@ const LOCKED_FREE_FEATURES = [
 export default function UpgradePage() {
   const { user } = useAuthStore();
   const { data: items } = useItems();
+  const [payOpen, setPayOpen] = useState(false);
 
   const isPro = user?.plan === "pro";
   const usedCount = items?.length ?? 0;
@@ -247,6 +249,7 @@ export default function UpgradePage() {
                   size="sm"
                   className="shrink-0 bg-gradient-to-r from-brand-600 to-violet-600 hover:from-brand-700 hover:to-violet-700 text-white border-0 shadow-lg shadow-brand-500/20"
                   id="banner-upgrade-btn"
+                  onClick={() => setPayOpen(true)}
                 >
                   <Crown className="w-3.5 h-3.5 mr-1.5" />
                   Upgrade to Pro
@@ -363,6 +366,7 @@ export default function UpgradePage() {
                         id="pro-card-upgrade-btn"
                         className="w-full text-white border-0 shadow-lg"
                         style={{ background: "rgb(var(--brand))" }}
+                        onClick={() => setPayOpen(true)}
                       >
                         <Crown className="w-3.5 h-3.5 mr-1.5" />
                         Upgrade to Pro — ₹299/mo
@@ -418,6 +422,9 @@ export default function UpgradePage() {
 
         </div>
       </div>
+
+      {/* Payment modal — rendered into document.body via portal */}
+      <PaymentModal open={payOpen} onClose={() => setPayOpen(false)} />
     </AppLayout>
   );
 }
