@@ -41,7 +41,7 @@ export default function AuthLayout({
           <div className="w-9 h-9 rounded-xl bg-white/20 dark:bg-brand/20 flex items-center justify-center transition-colors">
             <Brain className="w-5 h-5 text-white dark:text-brand transition-colors" />
           </div>
-          <span className="text-white dark:text-foreground font-semibold text-lg transition-colors">Second Brain</span>
+          <span className="text-white dark:text-foreground font-semibold text-lg transition-colors">Kortex - Your AI Powered Second Brain</span>
         </div>
 
         <div>
@@ -73,7 +73,7 @@ export default function AuthLayout({
             <div className="w-8 h-8 rounded-lg bg-brand dark:bg-brand/20 flex items-center justify-center transition-colors">
               <Brain className="w-4 h-4 text-white dark:text-brand" />
             </div>
-            <span className="font-semibold text-foreground">Second Brain</span>
+            <span className="font-semibold text-foreground">Kortex</span>
           </div>
 
           <div className="mb-8">

@@ -20,7 +20,7 @@ export default function LoginPage() {
   return (
     <AuthLayout
       title="Welcome back"
-      subtitle="Sign in to your Second Brain"
+      subtitle="Sign in to Kortex"
       footerText="Don't have an account?"
       footerLink="Create one free"
       footerHref="/register"

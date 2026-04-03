@@ -76,7 +76,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
             {!collapsed && (
               <span className="ml-3 font-semibold text-app text-sm tracking-tight whitespace-nowrap overflow-hidden">
-                Second Brain
+                Kortex
               </span>
             )}
           </div>
@@ -92,11 +92,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     className={({ isActive }) =>
                       `group flex items-center gap-3 px-2.5 py-2.5 rounded-xl
                        text-sm font-medium transition-all duration-150 relative
-                       ${
-                         isActive
-                           ? "bg-brand-soft text-brand"
-                           : "text-app-2 hover:text-app hover:bg-app-3"
-                       }
+                       ${isActive
+                        ? "bg-brand-soft text-brand"
+                        : "text-app-2 hover:text-app hover:bg-app-3"
+                      }
                        ${collapsed ? "justify-center" : ""}`
                     }
                   >

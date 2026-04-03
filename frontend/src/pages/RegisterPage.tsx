@@ -8,9 +8,8 @@ import { useRegister } from "../hooks/useAuth";
 function PasswordRule({ met, text }: { met: boolean; text: string }) {
   return (
     <div
-      className={`flex items-center gap-2 text-xs transition-colors ${
-        met ? "text-green-500" : "text-muted-foreground"
-      }`}
+      className={`flex items-center gap-2 text-xs transition-colors ${met ? "text-green-500" : "text-muted-foreground"
+        }`}
     >
       {met ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
       {text}
@@ -40,7 +39,7 @@ export default function RegisterPage() {
   return (
     <AuthLayout
       title="Create your account"
-      subtitle="Start building your Second Brain today — free forever"
+      subtitle="Start building your Second Brain on Kortex today — free forever"
       footerText="Already have an account?"
       footerLink="Sign in"
       footerHref="/login"
