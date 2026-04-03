@@ -160,10 +160,10 @@ export default function UpgradePage() {
                       <span className="font-medium">
                         {(user as any)?.createdAt
                           ? new Date((user as any).createdAt).toLocaleDateString("en-IN", {
-                              day: "numeric",
-                              month: "long",
-                              year: "numeric",
-                            })
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                          })
                           : "—"}
                       </span>
                     </p>
@@ -398,7 +398,7 @@ export default function UpgradePage() {
               />
               <FaqItem
                 q="Is there a student discount?"
-                a="Yes! Reach out to us at support@kortex.app with your college email — we offer discounts for verified students."
+                a="Yes! Reach out to us at sujayp175@gmail.com with your college email — we offer discounts for verified students."
               />
               <FaqItem
                 q="What happens when I hit the 100-item limit on Free?"
@@ -411,10 +411,10 @@ export default function UpgradePage() {
               <p className="text-sm text-muted-foreground">
                 Still have questions?{" "}
                 <a
-                  href="mailto:support@kortex.app"
+                  href="mailto:sujayp175@gmail.com"
                   className="text-brand-600 dark:text-brand-400 hover:underline font-medium"
                 >
-                  support@kortex.app
+                  sujayp175@gmail.com
                 </a>
               </p>
             </div>
