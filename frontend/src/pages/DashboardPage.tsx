@@ -49,7 +49,7 @@ function SkeletonCard() {
 
 export default function DashboardPage() {
   const { data: items, isLoading } = useItems();
-  const [selected, setSelected] = useState<Item | null>(null);
+  const [_selected, setSelected] = useState<Item | null>(null);
   useSSE();
 
   const readyItems = items?.filter((i) => i.status === "ready") || [];
