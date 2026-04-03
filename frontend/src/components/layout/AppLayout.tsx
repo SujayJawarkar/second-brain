@@ -12,6 +12,7 @@ import {
   PanelLeftOpen,
   Crown,
   Zap,
+  Settings,
 } from "lucide-react";
 import {
   Tooltip,
@@ -31,6 +32,8 @@ const navItems = [
   { to: "/", icon: LayoutDashboard, label: "Dashboard" },
   { to: "/search", icon: Search, label: "Search" },
   { to: "/graph", icon: Network, label: "Graph", pro: true },
+  { to: "/settings", icon: Settings, label: "Settings" },
+  { to: "/upgrade", icon: Crown, label: "Upgrade", upgrade: true },
 ];
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -83,52 +86,70 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
           {/* Nav */}
           <nav className="flex-1 px-2 py-3 space-y-0.5 overflow-hidden">
-            {navItems.map(({ to, icon: Icon, label, pro }) => (
-              <Tooltip key={to}>
-                <TooltipTrigger asChild>
-                  <NavLink
-                    to={to}
-                    end={to === "/"}
-                    className={({ isActive }) =>
-                      `group flex items-center gap-3 px-2.5 py-2.5 rounded-xl
-                       text-sm font-medium transition-all duration-150 relative
-                       ${isActive
-                        ? "bg-brand-soft text-brand"
-                        : "text-app-2 hover:text-app hover:bg-app-3"
+            {navItems.map(({ to, icon: Icon, label, pro, upgrade }: any) => {
+              // Upgrade item: brand-accented for free users, muted for pro
+              const isUpgradeItem = upgrade === true;
+              const showAsUpgrade = isUpgradeItem && !isPro;
+
+              return (
+                <Tooltip key={to}>
+                  <TooltipTrigger asChild>
+                    <NavLink
+                      to={to}
+                      end={to === "/"}
+                      className={({ isActive }) =>
+                        `group flex items-center gap-3 px-2.5 py-2.5 rounded-xl
+                         text-sm font-medium transition-all duration-150 relative
+                         ${isActive
+                          ? showAsUpgrade
+                            ? "bg-brand-soft text-brand"
+                            : "bg-brand-soft text-brand"
+                          : showAsUpgrade
+                          ? "text-brand hover:bg-brand-soft"
+                          : "text-app-2 hover:text-app hover:bg-app-3"
+                        }
+                         ${collapsed ? "justify-center" : ""}`
                       }
-                       ${collapsed ? "justify-center" : ""}`
-                    }
-                  >
-                    {({ isActive }) => (
-                      <>
-                        {/* Active indicator bar */}
-                        {isActive && (
-                          <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-full bg-brand" />
-                        )}
-                        <Icon className="w-4 h-4 shrink-0" />
-                        {!collapsed && (
-                          <>
-                            <span className="flex-1 whitespace-nowrap">
-                              {label}
-                            </span>
-                            {pro && (
-                              <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded-md bg-brand-soft text-brand uppercase tracking-wide">
-                                Pro
+                    >
+                      {({ isActive }) => (
+                        <>
+                          {/* Active indicator bar */}
+                          {isActive && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-full bg-brand" />
+                          )}
+                          <Icon
+                            className={`w-4 h-4 shrink-0 ${showAsUpgrade && !isActive ? "text-brand" : ""}`}
+                          />
+                          {!collapsed && (
+                            <>
+                              <span className="flex-1 whitespace-nowrap">
+                                {isUpgradeItem && isPro ? "Billing" : label}
                               </span>
-                            )}
-                          </>
-                        )}
-                      </>
-                    )}
-                  </NavLink>
-                </TooltipTrigger>
-                {collapsed && (
-                  <TooltipContent side="right" className="text-xs">
-                    {label}
-                  </TooltipContent>
-                )}
-              </Tooltip>
-            ))}
+                              {pro && (
+                                <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded-md bg-brand-soft text-brand uppercase tracking-wide">
+                                  Pro
+                                </span>
+                              )}
+                              {showAsUpgrade && (
+                                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-md uppercase tracking-wide text-white"
+                                  style={{ background: "rgb(var(--brand))" }}>
+                                  New
+                                </span>
+                              )}
+                            </>
+                          )}
+                        </>
+                      )}
+                    </NavLink>
+                  </TooltipTrigger>
+                  {collapsed && (
+                    <TooltipContent side="right" className="text-xs">
+                      {isUpgradeItem && isPro ? "Billing" : label}
+                    </TooltipContent>
+                  )}
+                </Tooltip>
+              );
+            })}
           </nav>
 
           {/* Bottom section */}

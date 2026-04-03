@@ -33,11 +33,17 @@ export class ParserService {
   }
 
   async parsePdf(buffer: Buffer): Promise<{ title: string; content: string }> {
-    const data = await pdfParse(buffer);
-    return {
-      title: data.info?.Title || "PDF Document",
-      content: data.text,
-    };
+    try {
+      const data = await pdfParse(buffer);
+      return {
+        title: data.info?.Title || "PDF Document",
+        content: data.text,
+      };
+    } catch (err: any) {
+      throw new Error(
+        `Could not parse PDF — the file may be corrupted, password-protected, or in an unsupported format. (${err.message})`
+      );
+    }
   }
 
   chunkText(text: string, maxTokens = 512, overlapTokens = 64): string[] {

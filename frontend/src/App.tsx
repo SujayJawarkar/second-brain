@@ -5,6 +5,8 @@ import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import SearchPage from "./pages/SearchPage";
 import GraphPage from "./pages/GraphPage";
+import SettingsPage from "./pages/SettingsPage";
+import UpgradePage from "./pages/UpgradePage";
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const isAuth = useAuthStore((s) => s.isAuth);
@@ -57,6 +59,22 @@ export default function App() {
           element={
             <PrivateRoute>
               <GraphPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <PrivateRoute>
+              <SettingsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/upgrade"
+          element={
+            <PrivateRoute>
+              <UpgradePage />
             </PrivateRoute>
           }
         />

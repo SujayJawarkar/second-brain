@@ -75,6 +75,23 @@ export class AuthService {
     };
     return jwt.sign(payload, env.jwtSecret, { expiresIn: "7d" });
   }
+  async changePassword(userId: string, currentPassword: string, newPassword: string) {
+    const [user] = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+    if (!user) throw new Error("User not found");
+
+    const valid = await bcrypt.compare(currentPassword, user.password);
+    if (!valid) throw new Error("Current password is incorrect");
+
+    if (newPassword.length < 8) throw new Error("New password must be at least 8 characters");
+
+    const hashed = await bcrypt.hash(newPassword, 12);
+    await db.update(users).set({ password: hashed }).where(eq(users.id, userId));
+  }
+
+  async deleteAccount(userId: string) {
+    // Cascade deletes all items, chunks, tags, links via FK constraints
+    await db.delete(users).where(eq(users.id, userId));
+  }
 }
 
 export const authService = new AuthService();

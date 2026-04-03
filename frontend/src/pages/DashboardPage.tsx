@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Brain, Inbox } from "lucide-react";
 import { Skeleton } from "../components/ui/skeleton";
 import AppLayout from "../components/layout/AppLayout";
 import SaveBar from "../components/items/SaveBar";
 import ItemCard from "../components/items/ItemCard";
+import ItemDetailDrawer from "../components/items/ItemDetailDrawer";
 import { useItems } from "../hooks/useItems";
 import { useSSE } from "../hooks/useSSE";
 import type { Item } from "../types";
@@ -49,11 +50,23 @@ function SkeletonCard() {
 
 export default function DashboardPage() {
   const { data: items, isLoading } = useItems();
-  const [_selected, setSelected] = useState<Item | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   useSSE();
+
+  // Allow related-item clicks inside the drawer to navigate
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const { itemId } = (e as CustomEvent).detail;
+      setSelectedId(itemId);
+    };
+    window.addEventListener("kortex:open-item", handler);
+    return () => window.removeEventListener("kortex:open-item", handler);
+  }, []);
 
   const readyItems = items?.filter((i) => i.status === "ready") || [];
   const processingItems = items?.filter((i) => i.status !== "ready") || [];
+
+  const handleSelect = (item: Item) => setSelectedId(item.id);
 
   return (
     <AppLayout>
@@ -100,7 +113,7 @@ export default function DashboardPage() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {processingItems.map((item) => (
-                  <ItemCard key={item.id} item={item} onSelect={setSelected} />
+                  <ItemCard key={item.id} item={item} onSelect={handleSelect} />
                 ))}
               </div>
             </div>
@@ -118,13 +131,19 @@ export default function DashboardPage() {
               )}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {readyItems.map((item) => (
-                  <ItemCard key={item.id} item={item} onSelect={setSelected} />
+                  <ItemCard key={item.id} item={item} onSelect={handleSelect} />
                 ))}
               </div>
             </div>
           )}
         </div>
       </div>
+
+      {/* Item Detail Drawer */}
+      <ItemDetailDrawer
+        itemId={selectedId}
+        onClose={() => setSelectedId(null)}
+      />
     </AppLayout>
   );
 }
