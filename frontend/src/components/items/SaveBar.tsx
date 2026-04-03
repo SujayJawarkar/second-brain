@@ -55,11 +55,10 @@ export default function SaveBar() {
           <button
             type="button"
             onClick={() => setMode("url")}
-            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-all ${
-              mode === "url"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-all ${mode === "url"
+              ? "bg-background text-foreground shadow-sm"
+              : "text-muted-foreground hover:text-foreground"
+              }`}
           >
             <Link2 className="w-3.5 h-3.5" />
             URL
@@ -67,11 +66,10 @@ export default function SaveBar() {
           <button
             type="button"
             onClick={() => setMode("note")}
-            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-all ${
-              mode === "note"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-all ${mode === "note"
+              ? "bg-background text-foreground shadow-sm"
+              : "text-muted-foreground hover:text-foreground"
+              }`}
           >
             <FileText className="w-3.5 h-3.5" />
             Note
@@ -98,7 +96,7 @@ export default function SaveBar() {
         <Button
           type="submit"
           disabled={save.isPending || !input.trim()}
-          className="h-10 px-4 bg-brand-600 hover:bg-brand-700 text-white shrink-0"
+          className="h-10 px-4 bg-brand-600 hover:bg-brand-700 text-grey-900 border-2 border-grey-900 bg-grey-400 shrink-0"
         >
           {save.isPending ? (
             <Loader2 className="w-4 h-4 animate-spin" />

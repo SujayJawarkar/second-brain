@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   Brain,
@@ -19,6 +19,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+} from "../ui/dropdown-menu";
 import { useAuthStore } from "../../store/auth.store";
 import { useTheme } from "../../lib/theme";
 
@@ -29,7 +34,15 @@ const navItems = [
 ];
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState<boolean>(() => {
+    const saved = localStorage.getItem("sidebar-collapsed");
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("sidebar-collapsed", JSON.stringify(collapsed));
+  }, [collapsed]);
+
   const { user, clearAuth } = useAuthStore();
   const { isDark, toggle } = useTheme();
   const navigate = useNavigate();
@@ -166,60 +179,99 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </Tooltip>
 
             {/* User row */}
-            <div
-              className={`flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl
-              bg-app-3 mt-1 ${collapsed ? "justify-center" : ""}`}
-            >
-              {/* Avatar */}
-              <div
-                className="w-7 h-7 rounded-full shrink-0 flex items-center justify-center text-white text-xs font-bold"
-                style={{ background: "rgb(var(--brand))" }}
-              >
-                {initial}
-              </div>
+            {collapsed ? (
+              <DropdownMenu>
+                <div className="flex justify-center mt-1">
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0 outline-none"
+                      style={{ background: "rgb(var(--brand))" }}
+                    >
+                      {initial}
+                    </button>
+                  </DropdownMenuTrigger>
+                </div>
 
-              {!collapsed && (
-                <>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-medium text-app truncate leading-tight">
-                      {user?.email}
-                    </p>
-                    <div className="flex items-center gap-1 mt-0.5">
+                <DropdownMenuContent
+                  side="right"
+                  align="end"
+                  sideOffset={14}
+                  className="w-48 bg-app-2 border-app rounded-xl shadow-card p-2"
+                >
+                  {/* User info */}
+                  <div className="px-2 py-2 border-b border-app mb-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <div
+                        className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0"
+                        style={{ background: "rgb(var(--brand))" }}
+                      >
+                        {initial}
+                      </div>
+                      <p className="text-xs font-medium text-app truncate">
+                        {user?.email}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1 pl-8">
                       {isPro ? (
                         <>
                           <Crown className="w-2.5 h-2.5 text-amber-400" />
                           <span className="text-[10px] text-amber-400 font-semibold">
-                            Pro
+                            Pro plan
                           </span>
                         </>
                       ) : (
-                        <span className="text-[10px] text-app-3">Free</span>
+                        <span className="text-[10px] text-app-2">
+                          Free plan
+                        </span>
                       )}
                     </div>
                   </div>
 
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button
-                        onClick={handleLogout}
-                        className="text-app-3 hover:text-red-400 transition-colors shrink-0 p-1 rounded-lg hover:bg-red-500/10"
-                      >
-                        <LogOut className="w-3.5 h-3.5" />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent side="right" className="text-xs">
-                      Sign out
-                    </TooltipContent>
-                  </Tooltip>
-                </>
-              )}
+                  {/* Logout */}
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-2 w-full px-2 py-2 rounded-lg
+                      text-xs text-app-2 hover:text-red-400 hover:bg-red-500/10
+                      transition-all duration-150 outline-none"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    Sign out
+                  </button>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl bg-app-3 mt-1">
+                {/* Avatar */}
+                <div
+                  className="w-7 h-7 rounded-full shrink-0 flex items-center justify-center text-white text-xs font-bold"
+                  style={{ background: "rgb(var(--brand))" }}
+                >
+                  {initial}
+                </div>
 
-              {collapsed && (
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-medium text-app truncate leading-tight">
+                    {user?.email}
+                  </p>
+                  <div className="flex items-center gap-1 mt-0.5">
+                    {isPro ? (
+                      <>
+                        <Crown className="w-2.5 h-2.5 text-amber-400" />
+                        <span className="text-[10px] text-amber-400 font-semibold">
+                          Pro
+                        </span>
+                      </>
+                    ) : (
+                      <span className="text-[10px] text-app-2">Free</span>
+                    )}
+                  </div>
+                </div>
+
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button
                       onClick={handleLogout}
-                      className="text-app-3 hover:text-red-400 transition-colors p-1 rounded-lg hover:bg-red-500/10"
+                      className="text-app-3 hover:text-red-400 transition-colors shrink-0 p-1 rounded-lg hover:bg-red-500/10"
                     >
                       <LogOut className="w-3.5 h-3.5" />
                     </button>
@@ -228,8 +280,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     Sign out
                   </TooltipContent>
                 </Tooltip>
-              )}
-            </div>
+              </div>
+            )}
           </div>
 
           {/* ── Collapse toggle — fixed to sidebar edge ───── */}
