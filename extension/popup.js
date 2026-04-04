@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // State
   let token = null;
   const baseUrl = "https://second-brain-backend-xqqh.onrender.com";
+  // const baseUrl = "http://localhost:3000";
   let currentTab = null;
 
   // Initialize
