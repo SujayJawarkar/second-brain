@@ -380,7 +380,7 @@ a quick note without switching tabs.
 ### Installation
 
 > The extension is not yet on the Chrome Web Store. Install it manually
-> using the unpacked folder method.
+> using the unpacked folder method. Download the extension folder from the repo.
 
 1. Open Chrome and go to `chrome://extensions`
 

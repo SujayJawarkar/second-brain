@@ -1,4 +1,4 @@
-import { Brain, Sun, Moon } from "lucide-react";
+import { Brain, Sun, Moon, Puzzle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../lib/theme";
 
@@ -22,7 +22,22 @@ export default function AuthLayout({
   const { isDark, toggle } = useTheme();
 
   return (
-    <div className="min-h-screen bg-background flex relative">
+    <div className="min-h-screen flex flex-col relative w-full">
+      {/* Top Bar Banner for Extension */}
+      <a 
+        href="https://github.com/SujayJawarkar/second-brain#browser-extension" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        className="w-full bg-brand/10 border-b border-brand/20 py-2.5 px-4 flex items-center justify-center gap-2 hover:bg-brand/20 transition-colors text-foreground outline-none z-20 shrink-0"
+      >
+        <Puzzle className="w-4 h-4 text-brand" />
+        <span className="text-sm font-medium text-foreground text-center">
+          Capture knowledge anywhere with the <span className="font-bold underline text-brand hover:text-brand/80 transition-colors">Kortex Browser Extension</span>.
+        </span>
+      </a>
+
+      {/* Main Layout Area */}
+      <div className="flex-1 bg-background flex relative">
       {/* Theme Toggle Button */}
       <button
         onClick={toggle}
@@ -96,6 +111,7 @@ export default function AuthLayout({
           </p>
         </div>
       </div>
+    </div>
     </div>
   );
 }

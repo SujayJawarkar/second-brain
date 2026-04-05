@@ -13,6 +13,7 @@ import {
   Crown,
   Zap,
   Settings,
+  Puzzle,
 } from "lucide-react";
 import {
   Tooltip,
@@ -154,6 +155,27 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
           {/* Bottom section */}
           <div className="px-2 py-3 border-t border-app space-y-0.5 shrink-0">
+            {/* Extension promo banner — expanded */}
+            {!collapsed && (
+              <a
+                href="https://github.com/SujayJawarkar/second-brain#browser-extension"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mb-2 block px-3 py-2.5 rounded-xl bg-app-3 border border-app hover:border-brand/40 hover:bg-app-3/80 transition-colors outline-none"
+                title="Get the Kortex Browser Extension"
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <Puzzle className="w-3.5 h-3.5 text-brand" />
+                  <span className="text-xs font-semibold text-app text-left">
+                    Browser Extension
+                  </span>
+                </div>
+                <p className="text-[11px] text-app-2 leading-snug text-left">
+                  Capture knowledge anywhere
+                </p>
+              </a>
+            )}
+
             {/* Upgrade banner — only free users, expanded */}
             {!isPro && !collapsed && (
               <div className="mb-2 px-3 py-2.5 rounded-xl bg-brand-soft border border-brand/20">
