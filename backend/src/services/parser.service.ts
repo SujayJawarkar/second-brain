@@ -93,7 +93,12 @@ export class ParserService {
 
       return { title: title.trim(), content };
     } catch (fallbackErr: any) {
-      throw new Error(`Parsing failed completely. Jina error + Fallback error: ${fallbackErr.message}`);
+      console.warn(`Parsing failed completely. Jina error + Fallback error: ${fallbackErr.message}`);
+      // Graceful fallback to avoid failing the ingestion pipeline
+      return { 
+        title: url, 
+        content: `Could not extract text content from this page automatically due to website security restrictions (e.g., Cloudflare, Paywalls, or Bot Protection).\n\nOriginal link: ${url}`
+      };
     }
   }
 
