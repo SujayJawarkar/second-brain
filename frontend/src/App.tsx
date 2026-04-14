@@ -8,6 +8,7 @@ import GraphPage from "./pages/GraphPage";
 import SettingsPage from "./pages/SettingsPage";
 import UpgradePage from "./pages/UpgradePage";
 import NotFoundPage from "./pages/NotFoundPage";
+import ReloadPrompt from "./components/ReloadPrompt";
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const isAuth = useAuthStore((s) => s.isAuth);
@@ -21,7 +22,9 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <>
+      <ReloadPrompt />
+      <BrowserRouter>
       <Routes>
         <Route
           path="/login"
@@ -82,5 +85,6 @@ export default function App() {
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
+  </>
   );
 }

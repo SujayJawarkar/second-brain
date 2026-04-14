@@ -1,6 +1,7 @@
 import { razorpay } from "../config/razorpay";
 import { env } from "../config/env";
 import crypto from "crypto";
+import jwt from "jsonwebtoken";
 import { db } from "../db";
 import { users } from "../db/schema";
 import { eq } from "drizzle-orm";
@@ -85,7 +86,13 @@ export const verifyPayment = async (userId: string, paymentId: string, subscript
     .where(eq(users.id, userId))
     .returning();
 
-  return updatedUser;
+  const token = jwt.sign(
+    { userId: updatedUser.id, email: updatedUser.email, plan: updatedUser.plan },
+    env.jwtSecret,
+    { expiresIn: "7d" }
+  );
+
+  return { user: updatedUser, token };
 };
 
 export const handleWebhook = async (rawBody: string | Buffer, signature: string) => {

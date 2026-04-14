@@ -11,7 +11,7 @@ export class CloudinaryService {
       const uploadStream = cloudinary.uploader.upload_stream(
         {
           folder,
-          public_id: filename.replace(/\.[^/.]+$/, ""), // Remove extension
+          public_id: filename, // Keep the extension
           resource_type: "raw", // Needed for non-image files like PDF
         },
         (error, result) => {

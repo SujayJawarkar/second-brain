@@ -61,14 +61,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <TooltipProvider delayDuration={300}>
-      <div className="flex h-screen bg-app overflow-hidden">
-        {/* ── Sidebar ─────────────────────────────────────────────── */}
+      <div className="flex h-[100dvh] bg-app overflow-hidden">
+        {/* ── Sidebar (Desktop Only) ─────────────────────────────────────────────── */}
         <aside
           style={{
             width: collapsed ? "64px" : "220px",
             transition: "width 250ms cubic-bezier(0.4,0,0.2,1)",
           }}
-          className="relative flex flex-col bg-app-2 border-r border-app shrink-0 overflow-hidden"
+          className="relative hidden sm:flex flex-col bg-app-2 border-r border-app shrink-0 overflow-hidden"
         >
           {/* Logo row */}
           <div className="flex items-center h-14 px-3 border-b border-app shrink-0">
@@ -326,7 +326,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             )}
           </div>
 
-          {/* ── Collapse toggle — fixed to sidebar edge ───── */}
           <button
             onClick={() => setCollapsed((c) => !c)}
             className="absolute -right-3.5 top-[3.25rem] z-20
@@ -343,9 +342,91 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </button>
         </aside>
 
-        {/* ── Main ─────────────────────────────────────────────── */}
-        <main className="flex-1 flex flex-col overflow-hidden min-w-0 bg-app">
+        {/* ── Main content (Responsive Wrapper) ─────────────────────────────────────────────── */}
+        <main className="flex-1 flex flex-col overflow-hidden min-w-0 bg-app relative pb-16 sm:pb-0">
+          
+          {/* Mobile Top Header */}
+          <header className="flex sm:hidden items-center justify-between h-14 px-4 border-b border-app bg-app-2 shrink-0 z-10 w-full relative">
+            <div className="flex items-center gap-3">
+              <div
+                className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
+                style={{ background: "rgb(var(--brand))" }}
+              >
+                <Brain className="w-4 h-4 text-white" />
+              </div>
+              <span className="font-semibold text-app text-sm tracking-tight text-left">
+                Kortex
+              </span>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <button
+                 onClick={toggle}
+                 className="w-8 h-8 rounded-full flex items-center justify-center border border-app bg-app text-app-2 hover:text-app outline-none"
+              >
+                 {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-indigo-400" />}
+              </button>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                   <button
+                     className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold outline-none"
+                     style={{ background: "rgb(var(--brand))" }}
+                   >
+                     {initial}
+                   </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                   side="bottom"
+                   align="end"
+                   className="w-48 bg-app-2 border-app rounded-xl shadow-card p-2 z-50"
+                >
+                   <div className="px-2 py-2 border-b border-app mb-1">
+                     <p className="text-xs font-medium text-app truncate">{user?.email}</p>
+                     <p className="text-[10px] text-app-2 font-medium mt-0.5">{isPro ? "Pro Plan" : "Free Plan"}</p>
+                   </div>
+                   <button
+                     onClick={handleLogout}
+                     className="flex items-center gap-2 w-full px-2 py-2 rounded-lg text-xs text-app-2 hover:text-red-400 hover:bg-red-500/10 transition-colors outline-none"
+                   >
+                     <LogOut className="w-3.5 h-3.5" />Sign out
+                   </button>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </header>
+
+          {/* Core Page Component Injection */}
           {children}
+
+          {/* Mobile Bottom Navigation */}
+          <nav className="flex sm:hidden fixed bottom-0 left-0 right-0 h-16 bg-app-2 border-t border-app pb-[env(safe-area-inset-bottom)] px-2 items-center justify-around z-50">
+            {navItems.map(({ to, icon: Icon, label, upgrade }: any) => {
+              const isUpgradeItem = upgrade === true;
+              const showAsUpgrade = isUpgradeItem && !isPro;
+
+              return (
+                <NavLink
+                  key={to}
+                  to={to}
+                  end={to === "/"}
+                  className={({ isActive }) =>
+                    `flex flex-col items-center justify-center w-14 h-full gap-1 transition-colors relative
+                     ${isActive 
+                       ? (showAsUpgrade ? "text-brand" : "text-brand") 
+                       : (showAsUpgrade ? "text-brand/70" : "text-app-2 hover:text-app")}`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <Icon className={`w-5 h-5 ${showAsUpgrade && !isActive ? "text-brand" : ""}`} />
+                      <span className="text-[10px] font-medium leading-none">{label}</span>
+                    </>
+                  )}
+                </NavLink>
+              );
+            })}
+          </nav>
         </main>
       </div>
     </TooltipProvider>

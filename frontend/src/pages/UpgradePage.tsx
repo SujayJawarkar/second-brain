@@ -128,6 +128,9 @@ export default function UpgradePage() {
         subscription_id: res.data.subscriptionId,
         name: "Kortex",
         description: "Pro Subscription (Monthly)",
+        prefill: {
+          email: user?.email || "",
+        },
         handler: async function (response: any) {
           try {
             const verifyRes = await billingApi.verify({
@@ -136,7 +139,7 @@ export default function UpgradePage() {
               razorpaySignature: response.razorpay_signature,
             });
             toast.success("Welcome to Pro!");
-            setAuth({ ...user!, plan: verifyRes.data.plan }, window.localStorage.getItem("token") || ""); 
+            setAuth({ ...user!, plan: verifyRes.data.plan }, verifyRes.data.token); 
             window.location.reload(); 
           } catch (err: any) {
             toast.error(err.response?.data?.error || "Payment verification failed");

@@ -40,7 +40,7 @@ export default function SaveBar() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (mode === "pdf") {
       if (!file) {
         toast.error("Please select a PDF file first");
@@ -88,13 +88,13 @@ export default function SaveBar() {
   };
 
   return (
-    <div className="border-b border-border bg-card px-6 py-4">
+    <div className="border-b border-border bg-card px-4 sm:px-6 py-4">
       <form
         onSubmit={handleSubmit}
-        className="flex items-center gap-3 max-w-3xl"
+        className="flex flex-col sm:flex-row sm:items-center gap-3 max-w-3xl"
       >
         {/* Mode toggle */}
-        <div className="flex items-center bg-muted rounded-lg p-1 shrink-0">
+        <div className="flex items-center bg-muted rounded-lg p-1 shrink-0 self-start sm:self-auto">
           <button
             type="button"
             onClick={() => setMode("url")}
@@ -130,59 +130,62 @@ export default function SaveBar() {
           </button>
         </div>
 
-        {/* Input */}
-        <div className="flex-1 flex items-center">
-          {mode === "pdf" ? (
-            <div className="w-full relative flex items-center">
-              <input
-                type="file"
-                accept="application/pdf"
-                className="hidden"
-                ref={fileInputRef}
-                onChange={handleFileChange}
+        {/* Input & Submit wrapper */}
+        <div className="flex-1 flex items-center gap-3 w-full">
+          {/* Input */}
+          <div className="flex-1 flex items-center">
+            {mode === "pdf" ? (
+              <div className="w-full relative flex items-center">
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  className="hidden"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  disabled={save.isPending}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full flex justify-start text-muted-foreground font-normal border-dashed border-2 hover:bg-muted/50 transition-colors"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={save.isPending}
+                >
+                  <Upload className="w-4 h-4 mr-2 shrink-0" />
+                  <span className="truncate">{file ? file.name : "Select PDF..."}</span>
+                </Button>
+              </div>
+            ) : (
+              <Input
+                value={input}
+                onChange={(e: any) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder={
+                  mode === "url"
+                    ? "Paste any URL to save..."
+                    : "Write a quick note..."
+                }
                 disabled={save.isPending}
+                className="h-10 bg-background w-full"
               />
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full flex justify-start text-muted-foreground font-normal border-dashed border-2 hover:bg-muted/50 transition-colors"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={save.isPending}
-              >
-                <Upload className="w-4 h-4 mr-2" />
-                {file ? file.name : "Click to select a PDF file (max 20MB)..."}
-              </Button>
-            </div>
-          ) : (
-            <Input
-              value={input}
-              onChange={(e: any) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder={
-                mode === "url"
-                  ? "Paste any URL to save..."
-                  : "Write a quick note..."
-              }
-              disabled={save.isPending}
-              className="h-10 bg-background"
-            />
-          )}
-        </div>
+            )}
+          </div>
 
-        {/* Submit */}
-        <Button
-          type="submit"
-          disabled={save.isPending || (mode === "pdf" ? !file : !input.trim())}
-          className="h-10 px-4 bg-brand-600 hover:bg-brand-700 text-grey-900 border-2 border-grey-900 bg-grey-400 shrink-0"
-        >
-          {save.isPending ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <>
-              <Plus className="w-4 h-4 mr-1.5" /> Save
-            </>
-          )}
-        </Button>
+          {/* Submit */}
+          <Button
+            type="submit"
+            disabled={save.isPending || (mode === "pdf" ? !file : !input.trim())}
+            className="h-10 px-5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white border-0 shadow-lg shadow-indigo-500/20 rounded-xl transition-all duration-300 font-medium shrink-0"
+          >
+            {save.isPending ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <>
+                <Plus className="w-4 h-4 sm:mr-1.5" /> <span className="hidden sm:inline">Save</span>
+              </>
+            )}
+          </Button>
+        </div>
       </form>
     </div>
   );

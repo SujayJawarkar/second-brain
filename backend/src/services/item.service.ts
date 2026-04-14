@@ -2,6 +2,7 @@ import { eq, and, count, inArray } from "drizzle-orm";
 import { db } from "../db";
 import { items, itemTags, chunks } from "../db/schema";
 import { enqueue } from "../utils/queue";
+import { cloudinaryService } from "./cloudinary.service";
 
 const FREE_ITEM_LIMIT = 100;
 
@@ -158,7 +159,11 @@ export class ItemService {
       tagMap[t.itemId].push(t.tag);
     }
 
-    return results.map(item => ({ ...item, tags: tagMap[item.id] || [] }));
+    return results.map(item => ({ 
+      ...item, 
+      url: item.sourceType === "pdf" && item.url ? cloudinaryService.getSignedUrl(item.url) : item.url,
+      tags: tagMap[item.id] || [] 
+    }));
   }
 
   async getById(itemId: string, userId: string) {
@@ -175,7 +180,11 @@ export class ItemService {
       .from(itemTags)
       .where(eq(itemTags.itemId, itemId));
 
-    return { ...item, tags: tagsResult.map(t => t.tag) };
+    return { 
+      ...item, 
+      url: item.sourceType === "pdf" && item.url ? cloudinaryService.getSignedUrl(item.url) : item.url,
+      tags: tagsResult.map(t => t.tag) 
+    };
   }
 
   async delete(itemId: string, userId: string) {

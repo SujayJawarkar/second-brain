@@ -22,13 +22,13 @@ router.post("/verify", authenticate, async (req: AuthRequest, res: Response) => 
   }
 
   try {
-    const updatedUser = await verifyPayment(
+    const { user, token } = await verifyPayment(
       req.user!.userId,
       razorpayPaymentId,
       razorpaySubscriptionId,
       razorpaySignature
     );
-    res.json({ message: "Payment verified successfully", plan: updatedUser.plan });
+    res.json({ message: "Payment verified successfully", plan: user.plan, token });
   } catch (err: any) {
     res.status(400).json({ error: err.message });
   }
